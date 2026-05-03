@@ -300,7 +300,7 @@ if [ -n "$LTO" ]; then
 fi
 
 if [ -n "$MACOS_REDIST" ]; then
-    : ${MACOS_REDIST_ARCHS:=arm64 x86_64}
+    : ${MACOS_REDIST_ARCHS:=x86_64}
     : ${MACOS_REDIST_VERSION:=10.12}
     ARCH_LIST=""
     NATIVE=
