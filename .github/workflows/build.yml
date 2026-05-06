@@ -268,7 +268,7 @@ jobs:
           BUILD_DATE: ${{needs.prepare.outputs.BUILD_DATE}}
         run: |
           sudo apt-get update && sudo apt-get install libltdl-dev swig autoconf-archive
-          ./build-cross-tools.sh /opt/llvm-mingw $(pwd)/install/llvm-mingw ${{matrix.arch}} --with-python --with-busybox --thinlto --pgo
+          ./build-cross-tools.sh /opt/llvm-mingw $(pwd)/install/llvm-mingw ${{matrix.arch}} --with-python --thinlto --pgo
           .github/workflows/store-version.sh install/llvm-mingw/versions.txt
           cd install
           NAME=llvm-mingw-$TAG-${{matrix.crt}}-${{matrix.arch}}
@@ -307,6 +307,15 @@ jobs:
           del llvm-mingw-*.zip
           mv llvm-mingw-* c:\llvm-mingw
           echo "c:\llvm-mingw\busybox\bin" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
+
+          # No more --with-busybox directive in linux-cross-windows to build (& package) busybox.
+          # Instead, use pre-built busybox64u.exe for building (won't package):
+          New-Item -ItemType Directory -Force -Path c:\llvm-mingw\busybox\bin | Out-Null
+          Invoke-WebRequest -Uri "https://frippery.org/files/busybox/busybox64u.exe" `
+                            -OutFile "c:\llvm-mingw\busybox\bin\busybox.exe"
+          cd c:\llvm-mingw\busybox\bin
+          .\busybox.exe --install .
+
           echo "c:\llvm-mingw\bin" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
       - uses: actions/checkout@v6
       - name: Run tests
