@@ -5,7 +5,7 @@ on:
       ref:
         description: 'Ref to extract from'
         type: string
-        default: 'master'
+        default: 'mods'
       pipeline_type:
         description: 'Pipeline type'
         required: true
@@ -29,7 +29,7 @@ jobs:
         with:
           workflow: build.yml
           workflow_conclusion: success
-          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'master'}}
+          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'mods'}}
           event: ${{github.event_name == 'workflow_dispatch' && inputs.pipeline_type || 'schedule'}}
           name: parameters
       - name: Get build parameters
@@ -53,7 +53,7 @@ jobs:
         with:
           workflow: build.yml
           workflow_conclusion: success
-          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'master'}}
+          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'mods'}}
           event: ${{github.event_name == 'workflow_dispatch' && inputs.pipeline_type || 'schedule'}}
           name: windows-ucrt-${{matrix.arch}}-toolchain
       - name: Unpack toolchain

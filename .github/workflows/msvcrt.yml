@@ -5,7 +5,7 @@ on:
       ref:
         description: 'Ref to extract from'
         type: string
-        default: 'master'
+        default: 'mods'
       upload:
         description: 'Upload the artifacts'
         type: boolean
@@ -31,7 +31,7 @@ jobs:
         with:
           workflow: build.yml
           workflow_conclusion: success
-          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'master'}}
+          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'mods'}}
           event: ${{github.event_name == 'workflow_dispatch' && 'push' || 'schedule'}}
           name: parameters
       - name: Get build parameters
@@ -47,13 +47,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'master'}}
+          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'mods'}}
       - name: Download toolchain
         uses: dawidd6/action-download-artifact@v19
         with:
           workflow: build.yml
           workflow_conclusion: success
-          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'master'}}
+          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'mods'}}
           event: ${{github.event_name == 'workflow_dispatch' && 'push' || 'schedule'}}
           name: linux-ucrt-x86_64-toolchain
       - name: Unpack original toolchain
@@ -105,13 +105,13 @@ jobs:
           echo /opt/llvm-mingw/bin >> $GITHUB_PATH
       - uses: actions/checkout@v6
         with:
-          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'master'}}
+          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'mods'}}
       - name: Download profile
         uses: dawidd6/action-download-artifact@v19
         with:
           workflow: build.yml
           workflow_conclusion: success
-          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'master'}}
+          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'mods'}}
           event: ${{github.event_name == 'workflow_dispatch' && 'push' || 'schedule'}}
           name: profile
       - name: Cache downloads
@@ -186,7 +186,7 @@ jobs:
           echo /llvm-mingw/bin >> $GITHUB_PATH
       - uses: actions/checkout@v6
         with:
-          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'master'}}
+          ref: ${{github.event_name == 'workflow_dispatch' && inputs.ref || 'mods'}}
       - name: Run tests
         run: |
           ./run-tests.sh /llvm-mingw

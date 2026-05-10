@@ -5,7 +5,7 @@ on:
       ref:
         description: 'Ref to extract from'
         type: string
-        default: 'master'
+        default: 'mods'
       login:
         description: 'Log in to Docker Hub'
         type: boolean
